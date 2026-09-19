@@ -9,6 +9,10 @@ RewriteRule ^ https://distinctgraphicdesigns.com.au%{REQUEST_URI} [L,R=301]
 RewriteCond %{THE_REQUEST} \s/index\.html[\s?] [NC]
 RewriteRule ^index\.html$ / [L,R=301]
 
+# /folder/index.html -> /folder/
+RewriteCond %{THE_REQUEST} \s/(.+)/index\.html[\s?] [NC]
+RewriteRule ^(.+)/index\.html$ /$1/ [L,R=301]
+
 # Custom 404 page (unknown URLs used to fall through to WordPress and return 503)
 ErrorDocument 404 /404.html
 

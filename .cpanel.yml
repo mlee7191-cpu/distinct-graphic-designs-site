@@ -8,4 +8,9 @@ deployment:
     - /bin/cp .htaccess $DEPLOYPATH
     - /bin/cp robots.txt $DEPLOYPATH
     - /bin/cp sitemap.xml $DEPLOYPATH
+    - /bin/cp 417dc36f9b138ad76d99724e9e558919.txt $DEPLOYPATH
     - /bin/cp -R assets $DEPLOYPATH
+    - /bin/cp -R google-ads-management $DEPLOYPATH
+    - /bin/cp -R seo-and-content $DEPLOYPATH
+    - /bin/cp -R graphic-design $DEPLOYPATH
+    - /bin/cp -R web-and-digital $DEPLOYPATH
