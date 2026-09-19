@@ -1,0 +1,8 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/discomau/public_html/
+    - /bin/cp index.html $DEPLOYPATH
+    - /bin/cp resume.html $DEPLOYPATH
+    - /bin/cp .htaccess $DEPLOYPATH
+    - /bin/cp -R assets $DEPLOYPATH
