@@ -13,6 +13,13 @@ RewriteRule ^index\.html$ / [L,R=301]
 RewriteCond %{THE_REQUEST} \s/(.+)/index\.html[\s?] [NC]
 RewriteRule ^(.+)/index\.html$ /$1/ [L,R=301]
 
+# WordPress is no longer used: answer 404 for its leftover folders and files (nothing is deleted, they are still on the server)
+RewriteRule ^(wp-admin|wp-includes|wp-content)(/|$) - [R=404,L,NC]
+RewriteRule ^(wp-[a-z-]+\.php|xmlrpc\.php|index\.php|readme\.html|license\.txt)$ - [R=404,L,NC]
+
+# No directory listings (/assets/ and /assets/fonts/ currently show an "Index of" page)
+Options -Indexes
+
 # Custom 404 page (unknown URLs used to fall through to WordPress and return 503)
 ErrorDocument 404 /404.html
 
