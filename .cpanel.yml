@@ -5,4 +5,6 @@ deployment:
     - /bin/cp index.html $DEPLOYPATH
     - /bin/cp resume.html $DEPLOYPATH
     - /bin/cp .htaccess $DEPLOYPATH
+    - /bin/cp robots.txt $DEPLOYPATH
+    - /bin/cp sitemap.xml $DEPLOYPATH
     - /bin/cp -R assets $DEPLOYPATH
