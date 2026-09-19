@@ -1,13 +1,29 @@
+RewriteEngine On
+
+# One hop to https + non-www
+RewriteCond %{HTTPS} !=on [OR]
+RewriteCond %{HTTP_HOST} ^www\. [NC]
+RewriteRule ^ https://distinctgraphicdesigns.com.au%{REQUEST_URI} [L,R=301]
+
+# /index.html -> /
+RewriteCond %{THE_REQUEST} \s/index\.html[\s?] [NC]
+RewriteRule ^index\.html$ / [L,R=301]
+
+# Custom 404 page (unknown URLs used to fall through to WordPress and return 503)
+ErrorDocument 404 /404.html
+
 DirectoryIndex index.html index.php
 
+# WordPress rewrite block disabled: WordPress is no longer used on this site, so unknown URLs now get the real 404 (ErrorDocument above).
+# To re-enable WordPress, remove the leading '#' from each line between BEGIN and END.
 # BEGIN WordPress
-<IfModule mod_rewrite.c>
-RewriteEngine On
-RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
-RewriteBase /
-RewriteRule ^index\.php$ - [L]
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule . /index.php [L]
-</IfModule>
+#<IfModule mod_rewrite.c>
+#RewriteEngine On
+#RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+#RewriteBase /
+#RewriteRule ^index\.php$ - [L]
+#RewriteCond %{REQUEST_FILENAME} !-f
+#RewriteCond %{REQUEST_FILENAME} !-d
+#RewriteRule . /index.php [L]
+#</IfModule>
 # END WordPress
