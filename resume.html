@@ -24,7 +24,24 @@ a:hover { color: var(--color-accent-700); }
 .tag { border-radius: 999px; }
 figure.duotone, figure.duotone img { border-radius: 10px; overflow: hidden; }
 @media print { .no-print { display: none !important; } }
+/* Nav: links sit in .nav-links; on small screens (with JS) they collapse behind the .nav-toggle hamburger. */
+.nav-links { display: flex; align-items: center; gap: var(--space-4); }
+.nav-toggle { display: none; flex-direction: column; justify-content: center; align-items: center; gap: 5px; width: 44px; height: 44px; padding: 0; background: transparent; color: var(--color-bg); border: 1px solid var(--color-accent-600); border-radius: 10px; cursor: pointer; }
+.nav-toggle span { display: block; width: 20px; height: 2px; background: currentColor; transition: transform .2s, opacity .2s; }
+.nav-toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.nav-toggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+@media (max-width: 720px) {
+  .js .nav-toggle { display: inline-flex; }
+  .js .nav-links { display: none; flex-basis: 100%; flex-direction: column; align-items: stretch; gap: 0; margin-top: 12px; }
+  .js .nav-links.is-open { display: flex; }
+  .nav-links a:not(.btn) { padding: 14px 0; border-top: 1px solid var(--color-accent-600); }
+  .nav-links .btn { margin-top: 12px; justify-content: center; text-align: center; }
+  /* Multi-column list rows stack on phones; !important beats the inline grid-template-columns. */
+  .split-row { grid-template-columns: minmax(0,1fr) !important; gap: 8px !important; }
+}
 </style>
+<script>document.documentElement.className += " js";</script>
 <!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -43,9 +60,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div style="background:var(--color-accent-900);color:var(--color-bg);padding:0 0 clamp(48px,6vw,80px)">
     <header class="nav no-print" style="padding:20px var(--gutter);flex-wrap:wrap">
       <a href="index.html" class="nav-brand" style="margin-right:auto;display:flex;align-items:center"><img src="assets/logo-v2-rev.svg" alt="Distinct Graphic Designs" style="width:clamp(150px,18vw,196px)"></a>
-      <a href="index.html#services" style="color:var(--color-bg)">Expertise</a>
-      <a href="resume.html" aria-current="page" style="color:var(--color-accent-300)">Résumé</a>
-      <a class="btn" href="index.html#enquire" style="background:var(--color-bg);color:var(--color-accent-900);border-color:var(--color-bg);padding:10px 18px">Let’s talk</a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Menu"><span></span><span></span><span></span></button>
+      <nav class="nav-links" id="nav-links" aria-label="Main">
+        <a href="index.html#services" style="color:var(--color-bg)">Expertise</a>
+        <a href="resume.html" aria-current="page" style="color:var(--color-accent-300)">Résumé</a>
+        <a class="btn" href="index.html#enquire" style="background:var(--color-bg);color:var(--color-accent-900);border-color:var(--color-bg);padding:10px 18px">Let’s talk</a>
+      </nav>
     </header>
     <div style="padding:clamp(36px,5vw,64px) var(--gutter) 0">
 
@@ -107,17 +127,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <h2 style="margin:0;font-size:clamp(32px,4.6vw,58px);line-height:.92;letter-spacing:-.02em;text-transform:uppercase">Additional experience</h2>
       <p style="margin:0;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-accent-700)">Earlier roles</p>
     </div>
-    <div style="display:grid;grid-template-columns:minmax(0,120px) minmax(0,1fr) minmax(0,1fr);gap:clamp(16px,2.5vw,32px);padding:24px 0;border-bottom:1px solid var(--color-divider);align-items:start">
+    <div class="split-row" style="display:grid;grid-template-columns:minmax(0,120px) minmax(0,1fr) minmax(0,1fr);gap:clamp(16px,2.5vw,32px);padding:24px 0;border-bottom:1px solid var(--color-divider);align-items:start">
       <span style="font-size:13px;color:var(--color-accent-700)">2022</span>
       <h3 style="margin:0;font-size:clamp(20px,2.2vw,26px);text-transform:uppercase">Western Sydney Formula SAE</h3>
       <div><p style="margin:0;font-size:15px">Lead Graphic Designer · Penrith</p><p class="text-muted" style="margin:6px 0 0;font-size:14px">Led team branding and created social content, posters, flyers and advertising.</p></div>
     </div>
-    <div style="display:grid;grid-template-columns:minmax(0,120px) minmax(0,1fr) minmax(0,1fr);gap:clamp(16px,2.5vw,32px);padding:24px 0;border-bottom:1px solid var(--color-divider);align-items:start">
+    <div class="split-row" style="display:grid;grid-template-columns:minmax(0,120px) minmax(0,1fr) minmax(0,1fr);gap:clamp(16px,2.5vw,32px);padding:24px 0;border-bottom:1px solid var(--color-divider);align-items:start">
       <span style="font-size:13px;color:var(--color-accent-700)">2019 – 2022</span>
       <h3 style="margin:0;font-size:clamp(20px,2.2vw,26px);text-transform:uppercase">Big W</h3>
       <div><p style="margin:0;font-size:15px">Receipt and Dispatch · Winston Hills</p></div>
     </div>
-    <div style="display:grid;grid-template-columns:minmax(0,120px) minmax(0,1fr) minmax(0,1fr);gap:clamp(16px,2.5vw,32px);padding:24px 0;border-bottom:1px solid var(--color-divider);align-items:start">
+    <div class="split-row" style="display:grid;grid-template-columns:minmax(0,120px) minmax(0,1fr) minmax(0,1fr);gap:clamp(16px,2.5vw,32px);padding:24px 0;border-bottom:1px solid var(--color-divider);align-items:start">
       <span style="font-size:13px;color:var(--color-accent-700)">2016 – 2019</span>
       <h3 style="margin:0;font-size:clamp(20px,2.2vw,26px);text-transform:uppercase">Piddington Carpets</h3>
       <div><p style="margin:0;font-size:15px">Assistant Manager · Broadmeadow, NSW</p></div>
@@ -142,22 +162,22 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <h2 style="margin:0;font-size:clamp(32px,4.6vw,58px);line-height:.92;letter-spacing:-.02em;text-transform:uppercase">Education &amp; recognition</h2>
       <p style="margin:0;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-accent-700)">Education</p>
     </div>
-    <div style="display:grid;grid-template-columns:minmax(0,120px) minmax(0,1fr) minmax(0,1fr);gap:clamp(16px,2.5vw,32px);padding:24px 0;border-bottom:1px solid var(--color-divider);align-items:start">
+    <div class="split-row" style="display:grid;grid-template-columns:minmax(0,120px) minmax(0,1fr) minmax(0,1fr);gap:clamp(16px,2.5vw,32px);padding:24px 0;border-bottom:1px solid var(--color-divider);align-items:start">
       <span style="font-size:13px;color:var(--color-accent-700)">2020 – 2022</span>
       <h3 style="margin:0;font-size:clamp(20px,2.2vw,26px);text-transform:uppercase">Bachelor of Design (Visual Communication)</h3>
       <p style="margin:0;font-size:15px">Western Sydney University · Dean’s Merit List, 2021–2022</p>
     </div>
-    <div style="display:grid;grid-template-columns:minmax(0,120px) minmax(0,1fr) minmax(0,1fr);gap:clamp(16px,2.5vw,32px);padding:24px 0;border-bottom:1px solid var(--color-divider);align-items:start">
+    <div class="split-row" style="display:grid;grid-template-columns:minmax(0,120px) minmax(0,1fr) minmax(0,1fr);gap:clamp(16px,2.5vw,32px);padding:24px 0;border-bottom:1px solid var(--color-divider);align-items:start">
       <span style="font-size:13px;color:var(--color-accent-700)">2019 – 2020</span>
       <h3 style="margin:0;font-size:clamp(20px,2.2vw,26px);text-transform:uppercase">Diploma of Graphic Design</h3>
       <p style="margin:0;font-size:15px">Western Sydney University · First in class, 2020</p>
     </div>
-    <div style="display:grid;grid-template-columns:minmax(0,120px) minmax(0,1fr) minmax(0,1fr);gap:clamp(16px,2.5vw,32px);padding:24px 0;border-bottom:1px solid var(--color-divider);align-items:start">
+    <div class="split-row" style="display:grid;grid-template-columns:minmax(0,120px) minmax(0,1fr) minmax(0,1fr);gap:clamp(16px,2.5vw,32px);padding:24px 0;border-bottom:1px solid var(--color-divider);align-items:start">
       <span style="font-size:13px;color:var(--color-accent-700)">2017</span>
       <h3 style="margin:0;font-size:clamp(20px,2.2vw,26px);text-transform:uppercase">Certificate IV in Graphic Design</h3>
       <p style="margin:0;font-size:15px">Hunter TAFE NSW</p>
     </div>
-    <div style="display:grid;grid-template-columns:minmax(0,120px) minmax(0,1fr) minmax(0,1fr);gap:clamp(16px,2.5vw,32px);padding:24px 0;border-bottom:1px solid var(--color-divider);align-items:start">
+    <div class="split-row" style="display:grid;grid-template-columns:minmax(0,120px) minmax(0,1fr) minmax(0,1fr);gap:clamp(16px,2.5vw,32px);padding:24px 0;border-bottom:1px solid var(--color-divider);align-items:start">
       <span style="font-size:13px;color:var(--color-accent-700)">2013</span>
       <h3 style="margin:0;font-size:clamp(20px,2.2vw,26px);text-transform:uppercase">Certificate III in Information Technology</h3>
       <p style="margin:0;font-size:15px">Hunter TAFE NSW</p>
@@ -181,6 +201,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </div>
 
 <script>
+(function () {
+  var toggle = document.querySelector(".nav-toggle"), menu = document.getElementById("nav-links");
+  function setOpen(open) { toggle.setAttribute("aria-expanded", open); menu.classList.toggle("is-open", open); }
+  toggle.addEventListener("click", function () { setOpen(toggle.getAttribute("aria-expanded") !== "true"); });
+  menu.addEventListener("click", function (e) { if (e.target.closest("a")) setOpen(false); });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape") setOpen(false); });
+})();
+
 document.getElementById("print-btn").addEventListener("click", function () { window.print(); });
 </script>
 </body>
