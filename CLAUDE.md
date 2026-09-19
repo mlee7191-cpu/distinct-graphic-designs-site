@@ -31,7 +31,7 @@ The `<style>` block (font-face, gutter variables) is **duplicated** in `index.ht
 - `index.html`: the enquiry form's submit handler builds a `mailto:mark@distinctgraphicdesigns.com.au` link from the form fields. There is no backend, and nothing is stored or sent from the site. The form's on-page note says this, so keep the two consistent.
 - `resume.html`: `#print-btn` calls `window.print()`. The `.no-print` class hides the nav and buttons under `@media print`. (`site.js` uses a different id, `#print-resume`, which is one sign it is stale.)
 
-**Third-party:** Google Tag Manager (`GTM-KLMJ655L`) is embedded in `index.html` only (head script plus `<noscript>` iframe). `resume.html` has none.
+**Third-party:** Google Tag Manager (`GTM-KLMJ655L`) is embedded in both pages (head script plus `<noscript>` iframe right after `<body>`). Any new page needs the same snippet.
 
 **Assets:**
 - Logo variants: `logo-v2.svg` is used on light backgrounds and `logo-v2-rev.svg` on the dark hero and header. The older `distinct-logo*.svg` and `icon-favicon.svg` are unreferenced.
