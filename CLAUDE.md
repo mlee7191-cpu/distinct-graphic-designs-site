@@ -37,5 +37,6 @@ The `<style>` block (font-face, gutter variables) is **duplicated** in every pag
 **Assets:**
 - Logo variants: `logo-v2.svg` is used on light backgrounds and `logo-v2-rev.svg` on the dark hero and header. The older `distinct-logo*.svg` and `icon-favicon.svg` are unreferenced.
 - `hero-collage.webp` is used in the About section of `index.html`. `hero-collage.png` is the original and is **kept but unreferenced** (2.4 MB, so do not link it). `og-image.jpg` (1200x630, cropped from the collage) is the social sharing image.
+- Favicons: `assets/favicon.svg` (square viewBox, keep it square) is the source. `favicon.ico` (48x48), `favicon-192.png`, `favicon-512.png` and `apple-touch-icon.png` (180x180, white background) live in the **site root**, are generated from it, and are listed in `.cpanel.yml`. Every page's `<head>` links `favicon.ico`, the SVG, `favicon-192.png` and `apple-touch-icon.png`. Regenerate the PNG/ICO files if the SVG changes.
 - Fonts: Regular and Medium are served as WOFF2 with the TTF as fallback in `@font-face`; the other weights are TTF only.
 - `mark-lee-resume-2026.pdf` is the downloadable copy of the résumé linked from `resume.html`. Keep it in sync with the HTML résumé content.

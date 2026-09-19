@@ -8,6 +8,10 @@ deployment:
     - /bin/cp .htaccess $DEPLOYPATH
     - /bin/cp robots.txt $DEPLOYPATH
     - /bin/cp sitemap.xml $DEPLOYPATH
+    - /bin/cp favicon.ico $DEPLOYPATH
+    - /bin/cp favicon-192.png $DEPLOYPATH
+    - /bin/cp favicon-512.png $DEPLOYPATH
+    - /bin/cp apple-touch-icon.png $DEPLOYPATH
     - /bin/cp 417dc36f9b138ad76d99724e9e558919.txt $DEPLOYPATH
     - /bin/cp -R assets $DEPLOYPATH
     - /bin/cp -R google-ads-management $DEPLOYPATH
