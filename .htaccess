@@ -20,6 +20,11 @@ RewriteRule ^(wp-[a-z-]+\.php|xmlrpc\.php|index\.php|readme\.html|license\.txt)$
 # No directory listings (/assets/ and /assets/fonts/ currently show an "Index of" page)
 Options -Indexes
 
+# The enquiry settings file (database password) belongs one level above public_html. If it is ever put here by mistake, never serve it.
+<Files "enquiry-config.php">
+  Require all denied
+</Files>
+
 # Custom 404 page (unknown URLs used to fall through to WordPress and return 503)
 ErrorDocument 404 /404.html
 

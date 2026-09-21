@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /enquire.php
 
 Sitemap: https://distinctgraphicdesigns.com.au/sitemap.xml

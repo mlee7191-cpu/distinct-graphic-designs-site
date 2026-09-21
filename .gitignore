@@ -1,0 +1,2 @@
+# Real enquiry settings (database password etc.) live on the server, not in the repo. See enquiry-config.example.php.
+enquiry-config.php

@@ -119,7 +119,7 @@ h5 { font-size: 16px; }
 h6 { font-size: 13px; }
 h6 { letter-spacing: 0.08em; text-transform: uppercase; }
 p { margin: 0 0 var(--space-3); }
-a { color: var(--color-accent); text-underline-offset: 3px; }
+a { color: var(--color-accent); text-decoration: none; }
 img { display: block; max-width: 100%; }
 figure { margin: 0; }
 figcaption {

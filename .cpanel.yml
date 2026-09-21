@@ -8,6 +8,7 @@ deployment:
     - /bin/cp .htaccess $DEPLOYPATH
     - /bin/cp robots.txt $DEPLOYPATH
     - /bin/cp sitemap.xml $DEPLOYPATH
+    - /bin/cp enquire.php $DEPLOYPATH
     - /bin/cp favicon.ico $DEPLOYPATH
     - /bin/cp favicon-192.png $DEPLOYPATH
     - /bin/cp favicon-512.png $DEPLOYPATH
