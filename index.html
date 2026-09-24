@@ -160,6 +160,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Menu"><span></span><span></span><span></span></button>
       <nav class="nav-links" id="nav-links" aria-label="Main">
         <a href="#services" style="color:var(--color-bg)">Expertise</a>
+        <a href="/portfolio/" style="color:var(--color-bg)">Portfolio</a>
         <a href="/resume.html" style="color:var(--color-bg)">Résumé</a>
         <a class="btn" href="#enquire" style="background:var(--color-bg);color:var(--color-accent-900);border-color:var(--color-bg);padding:10px 18px">Let’s talk</a>
       </nav>
@@ -260,6 +261,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="field"><label for="f-service">What can I help with?</label><select id="f-service" class="input" name="service" required style="background:var(--color-bg)"><option value="">Choose a service</option><option>Performance marketing</option><option>SEO &amp; content</option><option>Graphic design</option><option>Web &amp; digital</option><option>Something else</option></select></div>
       </div>
       <div class="field" style="margin-top:16px"><label for="f-details">Project details</label><textarea id="f-details" class="input" name="details" rows="5" placeholder="What are you creating, who is it for, and when do you need it?" required style="background:var(--color-bg)"></textarea></div>
+      <div id="form-status" role="status" tabindex="-1" hidden style="margin-top:16px;padding:14px 16px;font-size:15px;line-height:1.4;background:var(--color-accent-100);border-left:4px solid var(--color-accent-700)"></div>
       <div aria-hidden="true" style="position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden"><label for="f-website">Leave this field empty</label><input id="f-website" type="text" name="website" tabindex="-1" autocomplete="off"></div>
       <button class="btn btn-primary btn-block" type="submit" style="padding:12px 20px;font-size:15px">Send my enquiry ↗</button>
       <p id="form-note" class="text-muted" style="margin:12px 0 0;font-size:11px;text-align:center" aria-live="polite">Your details are saved so I can reply and follow up. Analytics (PostHog) records that you sent an enquiry.</p>
@@ -274,7 +276,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </div>
       <nav aria-label="Footer" style="flex:2.4 1 320px;display:flex;flex-wrap:wrap;gap:32px clamp(32px,5vw,64px)">
         <div style="flex:1 1 140px"><p style="margin:0 0 14px;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--color-accent-700)">Services</p><ul style="list-style:none;margin:0;padding:0;display:grid;gap:10px;font-size:14px"><li><a href="/google-ads-management/" style="color:var(--color-text)">Google Ads management</a></li><li><a href="/seo-and-content/" style="color:var(--color-text)">SEO and content</a></li><li><a href="/graphic-design/" style="color:var(--color-text)">Graphic design</a></li><li><a href="/web-and-digital/" style="color:var(--color-text)">Web and digital</a></li></ul></div>
-        <div style="flex:1 1 140px"><p style="margin:0 0 14px;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--color-accent-700)">Company</p><ul style="list-style:none;margin:0;padding:0;display:grid;gap:10px;font-size:14px"><li><a href="/" aria-current="page" style="color:var(--color-text)">Home</a></li><li><a href="/resume.html" style="color:var(--color-text)">Résumé</a></li><li><a href="https://www.linkedin.com/in/mtlee91/" target="_blank" rel="noopener me" aria-label="LinkedIn (opens in a new tab)" style="color:var(--color-text)">LinkedIn ↗</a></li></ul></div>
+        <div style="flex:1 1 140px"><p style="margin:0 0 14px;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--color-accent-700)">Company</p><ul style="list-style:none;margin:0;padding:0;display:grid;gap:10px;font-size:14px"><li><a href="/" aria-current="page" style="color:var(--color-text)">Home</a></li><li><a href="/portfolio/" style="color:var(--color-text)">Portfolio</a></li><li><a href="/resume.html" style="color:var(--color-text)">Résumé</a></li><li><a href="https://www.linkedin.com/in/mtlee91/" target="_blank" rel="noopener me" aria-label="LinkedIn (opens in a new tab)" style="color:var(--color-text)">LinkedIn ↗</a></li></ul></div>
       </nav>
     </div>
     <div style="margin-top:clamp(32px,4vw,48px);padding:20px 0;border-top:1px solid var(--color-accent-300)">
@@ -295,8 +297,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 // Enquiry form: posts to /enquire.php, which saves the enquiry to the database and emails it. If that request fails for any reason
 // (server error, blocked, offline) it falls back to opening the visitor's email app, so an enquiry is never lost.
 (function () {
-  var form = document.getElementById("enquiry-form"), note = document.getElementById("form-note"),
-      btn = form.querySelector('button[type="submit"]'), loadedAt = Date.now();
+  var form = document.getElementById("enquiry-form"), status = document.getElementById("form-status"),
+      btn = form.querySelector('button[type="submit"]'), btnLabel = btn.textContent, loadedAt = Date.now();
+
+  // A clear message box above the button (success in the accent tint, a problem with a dark edge), scrolled into view.
+  function say(message, problem) {
+    status.textContent = message;
+    status.style.borderLeftColor = problem ? "var(--color-text)" : "var(--color-accent-700)";
+    status.hidden = false;
+    status.scrollIntoView({ block: "center", behavior: "smooth" });
+    try { status.focus({ preventScroll: true }); } catch (e) {}
+  }
 
   function mailtoFallback(p) {
     var subject = encodeURIComponent("Website enquiry — " + p.service);
@@ -307,13 +318,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       "Email: " + p.email,
       "Phone: " + (p.phone || "Not provided")
     ].join("\n"));
-    note.textContent = "Sorry, that didn’t send. Your email app should now open with this enquiry ready to send instead.";
+    say("Sorry, that didn’t send. Your email app should now open with this enquiry ready to send instead. If nothing opens, please email mark@distinctgraphicdesigns.com.au.", true);
     window.location.href = "mailto:mark@distinctgraphicdesigns.com.au?subject=" + subject + "&body=" + body;
   }
 
   function sent(p) {
     form.reset();
-    note.textContent = "Thanks, your enquiry has been sent. I’ll come back to you within a day.";
+    say("Thanks, your enquiry has been sent. I’ll come back to you within a day.", false);
     try {
       // Identify first so the event below is attached to this person, along with the page views that led here.
       window.dgd.identify(p.email, { email: p.email, name: p.name });
@@ -340,7 +351,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     });
 
     btn.disabled = true;
-    note.textContent = "Sending…";
+    btn.textContent = "Sending…";
+    status.hidden = true;
     var ctl = window.AbortController ? new AbortController() : null;
     var timer = setTimeout(function () { if (ctl) ctl.abort(); }, 15000);
 
@@ -349,12 +361,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         return r.json().catch(function () { return {}; }).then(function (j) {
           if (j.ok) { sent(p); return; }
           // A 422 means something to correct (bad email, sent too fast): show it. Anything else: use the email fallback.
-          if (r.status === 422 && j.message) { note.textContent = j.message; return; }
+          if (r.status === 422 && j.message) { say(j.message, true); return; }
           throw new Error("send failed");
         });
       })
       .catch(function () { mailtoFallback(p); })
-      .then(function () { clearTimeout(timer); btn.disabled = false; });
+      .then(function () { clearTimeout(timer); btn.disabled = false; btn.textContent = btnLabel; });
   });
 })();
 </script>

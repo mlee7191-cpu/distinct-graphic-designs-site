@@ -19,3 +19,4 @@ deployment:
     - /bin/cp -R seo-and-content $DEPLOYPATH
     - /bin/cp -R graphic-design $DEPLOYPATH
     - /bin/cp -R web-and-digital $DEPLOYPATH
+    - /bin/cp -R portfolio $DEPLOYPATH
