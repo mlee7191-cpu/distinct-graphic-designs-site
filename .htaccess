@@ -17,6 +17,9 @@ RewriteRule ^(.+)/index\.html$ /$1/ [L,R=301]
 # so the printed/shared link stays clean but the click is tagged (e.g. /portfolio-CPX)
 RewriteRule ^portfolio-([A-Za-z0-9]+)$ /portfolio/?utm_source=resume&utm_medium=pdf&utm_campaign=$1 [L,R=301,NC]
 
+# Safety net for the common "porfolio" (missing t) misspelling of the link above, already handed out to at least one employer
+RewriteRule ^porfolio-([A-Za-z0-9]+)$ /portfolio/?utm_source=resume&utm_medium=pdf&utm_campaign=$1 [L,R=301,NC]
+
 # WordPress is no longer used: answer 404 for its leftover folders and files (nothing is deleted, they are still on the server)
 RewriteRule ^(wp-admin|wp-includes|wp-content)(/|$) - [R=404,L,NC]
 RewriteRule ^(wp-[a-z-]+\.php|xmlrpc\.php|index\.php|readme\.html|license\.txt)$ - [R=404,L,NC]
