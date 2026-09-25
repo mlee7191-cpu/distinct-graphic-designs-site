@@ -40,6 +40,7 @@ a:hover { color: var(--color-accent-700); }
 figure.duotone, figure.duotone img { border-radius: 10px; overflow: hidden; }
 .portfolio-card { display: block; border: 1px solid var(--color-divider); border-radius: 10px; overflow: hidden; text-decoration: none; transition: border-color .15s ease, box-shadow .15s ease; }
 .portfolio-card:hover, .portfolio-card:focus-visible { border-color: var(--color-accent-600); box-shadow: 0 0 0 1px var(--color-accent-600); }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
 /* Nav: links sit in .nav-links; on small screens (with JS) they collapse behind the .nav-toggle hamburger. */
 .nav-links { display: flex; align-items: center; gap: var(--space-4); }
 .nav-toggle { display: none; flex-direction: column; justify-content: center; align-items: center; gap: 5px; width: 44px; height: 44px; padding: 0; background: transparent; color: var(--color-bg); border: 1px solid var(--color-accent-600); border-radius: 10px; cursor: pointer; }
@@ -93,6 +94,77 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
   </div>
 
+  <section id="screenguard-campaign-launch" style="padding:clamp(48px,6vw,80px) var(--gutter) clamp(56px,7vw,96px)">
+    <p style="margin:0 0 12px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-accent-700)">Multi-channel campaign · September 2026</p>
+    <div style="padding-bottom:20px;border-bottom:1px solid var(--color-text)">
+      <h2 style="margin:0;font-size:clamp(32px,4.6vw,58px);line-height:.92;letter-spacing:-.02em;text-transform:uppercase">ScreenGuard™ <span style="color:var(--color-accent-700);font-weight:400">campaign launch</span></h2>
+    </div>
+    <p style="margin:28px 0 0;max-width:46rem;font-size:clamp(16px,1.6vw,19px);line-height:1.45">Built on the <a href="#screenguard-brochure">ScreenGuard™ brochure</a> and <a href="#screenguard-flyer">flyer</a>, this campaign took Darley Aluminium's 316 stainless steel security screens to market across Google Ads, Meta, TikTok, Spotify, ChatGPT Ads, Reddit and print, all on a newly rebuilt website.</p>
+
+    <p style="margin:32px 0 12px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-neutral-700)">18–24 September 2026</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:16px">
+      <div class="blueprint" style="padding:24px;background:var(--color-accent-900);color:var(--color-bg);border-color:var(--color-accent-900)"><span style="font-family:var(--font-heading);font-weight:500;font-size:clamp(36px,4.4vw,52px);line-height:1;display:block">75</span><span style="font-size:13px;opacity:.85">quote requests in one week, up 79%</span></div>
+      <div class="blueprint" style="padding:24px;background:var(--color-accent-900);color:var(--color-bg);border-color:var(--color-accent-900)"><span style="font-family:var(--font-heading);font-weight:500;font-size:clamp(36px,4.4vw,52px);line-height:1;display:block">2,951</span><span style="font-size:13px;opacity:.85">website users, up 47%</span></div>
+      <div class="blueprint" style="padding:24px;background:var(--color-accent-900);color:var(--color-bg);border-color:var(--color-accent-900)"><span style="font-family:var(--font-heading);font-weight:500;font-size:clamp(36px,4.4vw,52px);line-height:1;display:block">42</span><span style="font-size:13px;opacity:.85">Google Ads quote requests at $50.01 each</span></div>
+      <div class="blueprint" style="padding:24px;background:var(--color-accent-900);color:var(--color-bg);border-color:var(--color-accent-900)"><span style="font-family:var(--font-heading);font-weight:500;font-size:clamp(36px,4.4vw,52px);line-height:1;display:block">$23.12</span><span style="font-size:13px;opacity:.85">Performance Max, cost per quote request</span></div>
+    </div>
+
+    <p style="margin:32px 0 12px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-neutral-700)">Meta (Facebook and Instagram) · 18–24 September 2026</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:16px">
+      <div class="blueprint" style="padding:24px;background:var(--color-accent-900);color:var(--color-bg);border-color:var(--color-accent-900)"><span style="font-family:var(--font-heading);font-weight:500;font-size:clamp(36px,4.4vw,52px);line-height:1;display:block">57</span><span style="font-size:13px;opacity:.85">website leads at $26.50 each</span></div>
+      <div class="blueprint" style="padding:24px;background:var(--color-accent-900);color:var(--color-bg);border-color:var(--color-accent-900)"><span style="font-family:var(--font-heading);font-weight:500;font-size:clamp(36px,4.4vw,52px);line-height:1;display:block">2,798</span><span style="font-size:13px;opacity:.85">link clicks at $0.21 each</span></div>
+      <div class="blueprint" style="padding:24px;background:var(--color-accent-900);color:var(--color-bg);border-color:var(--color-accent-900)"><span style="font-family:var(--font-heading);font-weight:500;font-size:clamp(36px,4.4vw,52px);line-height:1;display:block">217,017</span><span style="font-size:13px;opacity:.85">ad impressions, reaching more than 91,000 people</span></div>
+    </div>
+    <p style="margin:16px 0 0;max-width:46rem;font-size:13px;color:var(--color-neutral-700)">Each ad platform reports the leads it helped create, so platform figures overlap and are not added together. Total quote requests (75) are counted once, on the website.</p>
+
+    <div style="margin-top:40px">
+      <svg viewBox="0 0 680 240" role="presentation" aria-hidden="true" style="width:100%;height:auto;display:block">
+        <line x1="30" y1="200" x2="650" y2="200" stroke="var(--color-divider)" stroke-width="1"></line>
+        <line x1="61" y1="20" x2="61" y2="200" stroke="var(--color-neutral-700)" stroke-width="1" stroke-dasharray="4 4"></line>
+        <text x="66" y="16" font-size="11" fill="var(--color-neutral-700)">New site launched</text>
+        <polyline points="30,183.6 61,167.3 92,183.6 123,167.3 154,134.5 185,142.7 216,134.5 247,150.9 278,175.5 309,150.9 340,142.7 371,183.6 402,159.1 433,101.8 464,118.2 495,77.3 526,126.4 557,142.7 588,167.3 619,110.0 650,36.4" fill="none" stroke="var(--color-accent-700)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"></polyline>
+        <circle cx="650" cy="36.4" r="4" fill="var(--color-accent-700)"></circle>
+        <text x="30" y="218" font-size="11" fill="var(--color-neutral-700)" text-anchor="start">4 Sep</text>
+        <text x="247" y="218" font-size="11" fill="var(--color-neutral-700)" text-anchor="middle">11 Sep</text>
+        <text x="464" y="218" font-size="11" fill="var(--color-neutral-700)" text-anchor="middle">18 Sep</text>
+        <text x="650" y="218" font-size="11" fill="var(--color-neutral-700)" text-anchor="end">24 Sep</text>
+      </svg>
+      <p style="margin:12px 0 0;font-size:13px;color:var(--color-neutral-700)">Daily quote requests, 4–24 September 2026. Dashed line: the site moved from WordPress to Next.js on 5 September.</p>
+      <table class="sr-only">
+        <caption>Daily quote requests, 4–24 September 2026</caption>
+        <thead><tr><th scope="col">Date</th><th scope="col">Quote requests</th></tr></thead>
+        <tbody>
+          <tr><td>4 September</td><td>2</td></tr>
+          <tr><td>5 September (new site launched)</td><td>4</td></tr>
+          <tr><td>6 September</td><td>2</td></tr>
+          <tr><td>7 September</td><td>4</td></tr>
+          <tr><td>8 September</td><td>8</td></tr>
+          <tr><td>9 September</td><td>7</td></tr>
+          <tr><td>10 September</td><td>8</td></tr>
+          <tr><td>11 September</td><td>6</td></tr>
+          <tr><td>12 September</td><td>3</td></tr>
+          <tr><td>13 September</td><td>6</td></tr>
+          <tr><td>14 September</td><td>7</td></tr>
+          <tr><td>15 September</td><td>2</td></tr>
+          <tr><td>16 September</td><td>5</td></tr>
+          <tr><td>17 September</td><td>12</td></tr>
+          <tr><td>18 September</td><td>10</td></tr>
+          <tr><td>19 September</td><td>15</td></tr>
+          <tr><td>20 September</td><td>9</td></tr>
+          <tr><td>21 September</td><td>7</td></tr>
+          <tr><td>22 September</td><td>4</td></tr>
+          <tr><td>23 September</td><td>11</td></tr>
+          <tr><td>24 September</td><td>20</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div style="margin-top:40px">
+      <h3 style="margin:0 0 8px;font-size:22px;text-transform:uppercase">What I did</h3>
+      <p style="margin:0;max-width:46rem;font-size:15px">Campaign planning, ad creative, landing pages, UTM tracking and weekly performance reporting.</p>
+    </div>
+  </section>
+
   <section style="padding:clamp(48px,6vw,80px) var(--gutter) clamp(56px,7vw,96px)">
     <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:clamp(24px,4vw,48px);flex-wrap:wrap;padding-bottom:20px;border-bottom:1px solid var(--color-text)">
       <h2 style="margin:0;font-size:clamp(32px,4.6vw,58px);line-height:.92;letter-spacing:-.02em;text-transform:uppercase">Print &amp; <span style="color:var(--color-accent-700);font-weight:400">collateral</span></h2>
@@ -100,7 +172,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:clamp(24px,3vw,32px);margin-top:40px">
 
-      <a class="portfolio-card" href="/assets/portfolio/screenguard-brochure.pdf" target="_blank" rel="noopener">
+      <a class="portfolio-card" id="screenguard-brochure" href="/assets/portfolio/screenguard-brochure.pdf" target="_blank" rel="noopener">
         <figure style="margin:0"><img src="/assets/portfolio/screenguard-brochure-cover.webp" alt="Cover of the ScreenGuard product brochure, showing a home fitted with stainless steel security screening" width="1600" height="1128" loading="lazy" decoding="async" style="width:100%;height:auto;display:block"></figure>
         <div style="padding:20px">
           <p style="margin:0 0 6px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-accent-700)">Brochure · July 2026</p>
@@ -120,7 +192,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </div>
       </a>
 
-      <a class="portfolio-card" href="/assets/portfolio/screenguard-flyer.pdf" target="_blank" rel="noopener">
+      <a class="portfolio-card" id="screenguard-flyer" href="/assets/portfolio/screenguard-flyer.pdf" target="_blank" rel="noopener">
         <figure style="margin:0"><img src="/assets/portfolio/screenguard-flyer-cover.webp" alt="Cover of the ScreenGuard flyer, showing a home fitted with stainless steel security screening" width="1600" height="1128" loading="lazy" decoding="async" style="width:100%;height:auto;display:block"></figure>
         <div style="padding:20px">
           <p style="margin:0 0 6px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-accent-700)">Flyer · June 2026</p>
