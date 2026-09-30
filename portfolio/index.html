@@ -271,5 +271,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 })();
 </script>
 <script src="/assets/js/analytics.js" defer></script>
+<script>
+document.addEventListener('click', function (e) {
+  var a = e.target.closest('a[href]');
+  if (!a || !window.posthog) return;
+  var href = a.getAttribute('href');
+  if (/\.(pdf|jpe?g|png|zip)$/i.test(href)) {
+    posthog.capture('portfolio_file_opened', {
+      file: href.split('/').pop(),
+      link_text: a.innerText.trim()
+    });
+  }
+});
+</script>
 </body>
 </html>
