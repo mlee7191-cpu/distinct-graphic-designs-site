@@ -284,5 +284,71 @@ document.addEventListener('click', function (e) {
   }
 });
 </script>
+<script>
+(function () {
+  var frames = Array.prototype.slice.call(
+    document.querySelectorAll('iframe[src*="youtube.com/embed"]')
+  );
+  if (!frames.length) return;
+
+  // Switch on YouTube's player API for each embed
+  frames.forEach(function (f, i) {
+    var url = new URL(f.src);
+    if (url.searchParams.get('enablejsapi') !== '1') {
+      url.searchParams.set('enablejsapi', '1');
+      url.searchParams.set('origin', location.origin);
+      f.src = url.toString();
+    }
+    if (!f.id) f.id = 'yt-portfolio-' + i;
+  });
+
+  function track(eventName, player) {
+    if (!window.posthog) return;
+    var d = player.getVideoData ? player.getVideoData() : {};
+    posthog.capture(eventName, {
+      video_id: d.video_id,
+      video_title: d.title,
+      page: location.pathname
+    });
+  }
+
+  function setup() {
+    frames.forEach(function (f) {
+      var started = false, halfway = false, finished = false, timer;
+      var player = new YT.Player(f.id, {
+        events: {
+          onStateChange: function (e) {
+            if (e.data === YT.PlayerState.PLAYING) {
+              if (!started) { started = true; track('portfolio_video_played', player); }
+              clearInterval(timer);
+              timer = setInterval(function () {
+                var dur = player.getDuration(), t = player.getCurrentTime();
+                if (!halfway && dur && t / dur >= 0.5) {
+                  halfway = true; track('portfolio_video_50_percent', player);
+                }
+              }, 1000);
+            } else {
+              clearInterval(timer);
+            }
+            if (e.data === YT.PlayerState.ENDED && !finished) {
+              finished = true; track('portfolio_video_completed', player);
+            }
+          }
+        }
+      });
+    });
+  }
+
+  var prev = window.onYouTubeIframeAPIReady;
+  window.onYouTubeIframeAPIReady = function () { if (prev) prev(); setup(); };
+  if (window.YT && window.YT.Player) {
+    setup();
+  } else {
+    var s = document.createElement('script');
+    s.src = 'https://www.youtube.com/iframe_api';
+    document.head.appendChild(s);
+  }
+})();
+</script>
 </body>
 </html>
