@@ -1,0 +1,8 @@
+# Unlisted downloads: shared by direct link only, never linked from the site or listed in sitemap.xml/robots.txt.
+# Keep them out of search results and make the browser save the file instead of opening it.
+<IfModule mod_headers.c>
+  Header set X-Robots-Tag "noindex, nofollow"
+  <FilesMatch "\.pdf$">
+    Header set Content-Disposition "attachment"
+  </FilesMatch>
+</IfModule>

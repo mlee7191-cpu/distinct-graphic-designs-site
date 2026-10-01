@@ -20,3 +20,4 @@ deployment:
     - /bin/cp -R graphic-design $DEPLOYPATH
     - /bin/cp -R web-and-digital $DEPLOYPATH
     - /bin/cp -R portfolio $DEPLOYPATH
+    - /bin/cp -R files $DEPLOYPATH
