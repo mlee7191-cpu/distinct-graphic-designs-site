@@ -1,0 +1,218 @@
+<?php
+/*
+ * The "thanks, your enquiry is in" email sent to the visitor by enquire.php (layout 1a from the Claude Design project
+ * "Enquiry Auto-reply": dark header band, card body, row list). Included by enquire.php only; .htaccess refuses direct requests.
+ *
+ * Email-client rules this follows: tables for layout, inline styles (the <style> block only adds mobile and dark-mode tweaks),
+ * a PNG logo (Gmail and Outlook do not show SVG), absolute image URLs, and every visitor value HTML-escaped.
+ */
+declare(strict_types=1);
+
+if (!defined('ENQUIRY_AUTOREPLY')) {
+    http_response_code(404);
+    exit;
+}
+
+/** HTML-escape a value; blank values show as "Not provided". */
+function autoreply_esc(string $value): string
+{
+    return $value === '' ? 'Not provided' : htmlspecialchars($value, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+}
+
+/** The visitor's first name, for the greeting. */
+function autoreply_first_name(string $name): string
+{
+    $parts = preg_split('/\s+/u', trim($name));
+    return is_array($parts) && $parts[0] !== '' ? $parts[0] : 'there';
+}
+
+/** One label/value row of the enquiry summary. */
+function autoreply_row(string $label, string $valueHtml, int $lineHeight = 20): string
+{
+    return <<<HTML
+    <tr><td class="line" style="padding:14px 0;border-bottom:1px solid #d4d4d7;">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+        <td class="stack muted" width="140" valign="top" style="width:140px;font-size:13px;line-height:20px;color:#5d5d60;">{$label}</td>
+        <td class="stack ink" valign="top" style="font-size:15px;line-height:{$lineHeight}px;color:#1d1f20;word-break:break-word;">{$valueHtml}</td>
+      </tr></table>
+    </td></tr>
+
+HTML;
+}
+
+/** Plain-text version, for clients that do not show HTML. */
+function autoreply_text(array $in): string
+{
+    return implode("\r\n", [
+        'Thanks, ' . autoreply_first_name($in['name']) . '. Your enquiry is in.',
+        '',
+        'I’ve received your enquiry and will come back to you within a day. A copy of what you sent is below. If you need to add anything, just reply to this email.',
+        '',
+        'YOUR ENQUIRY',
+        'Service: ' . $in['service'],
+        'Email: ' . $in['email'],
+        'Phone: ' . ($in['phone'] !== '' ? $in['phone'] : 'Not provided'),
+        'Project details:',
+        str_replace("\n", "\r\n", $in['details']),
+        '',
+        'WHAT HAPPENS NEXT',
+        '01  I read through your details and reply within a day.',
+        '02  If it’s a good fit, we book a short call to talk through scope, timing and budget.',
+        '',
+        'Mark Lee',
+        'Distinct Graphic Designs',
+        'mark@distinctgraphicdesigns.com.au',
+        '0423 927 847',
+        '',
+        '--',
+        'You’re receiving this because you sent an enquiry at distinctgraphicdesigns.com.au. This is a one-off reply, not a mailing list.',
+        '© ' . gmdate('Y') . ' Distinct Graphic Designs · Uranquinty NSW, Australia',
+    ]);
+}
+
+/** HTML version. */
+function autoreply_html(array $in): string
+{
+    $site = 'https://distinctgraphicdesigns.com.au';
+    $firstName = htmlspecialchars(autoreply_first_name($in['name']), ENT_QUOTES | ENT_HTML5, 'UTF-8');
+    $year = gmdate('Y');
+    $rows = autoreply_row('Service', autoreply_esc($in['service']))
+        . autoreply_row('Email', autoreply_esc($in['email']))
+        . autoreply_row('Phone', autoreply_esc($in['phone']))
+        . autoreply_row('Project details', nl2br(autoreply_esc($in['details']), false), 22);
+
+    return <<<HTML
+<!DOCTYPE html>
+<html lang="en-AU" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="x-apple-disable-message-reformatting">
+<meta name="color-scheme" content="light dark">
+<meta name="supported-color-schemes" content="light dark">
+<title>Thanks, your enquiry has been received</title>
+<!--[if mso]><noscript><xml><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch></o:OfficeDocumentSettings></xml></noscript><![endif]-->
+<style>
+  body { margin:0; padding:0; }
+  a:hover { color:#2c455d !important; }
+  @media (max-width:620px) {
+    .outer { padding:0 !important; }
+    .card { border-left:0 !important; border-right:0 !important; }
+    .px { padding-left:24px !important; padding-right:24px !important; }
+    .h1 { font-size:30px !important; line-height:32px !important; }
+    .stack { display:block !important; width:100% !important; }
+    td.stack + td.stack { padding-top:4px !important; }
+  }
+  @media (prefers-color-scheme: dark) {
+    .bg { background:#1a1c1e !important; }
+    .card { background:#24272a !important; }
+    .ink { color:#e7e7ea !important; }
+    .muted { color:#b7b7ba !important; }
+    .line { border-color:#424244 !important; }
+    .plate { background:#2c455d !important; }
+    .accent { color:#94bce3 !important; }
+  }
+</style>
+</head>
+<body style="margin:0;padding:0;background:#f2f2f3;">
+<span style="display:none;font-size:1px;line-height:1px;max-height:0;max-width:0;opacity:0;overflow:hidden;mso-hide:all;">I’ve got your enquiry and will come back to you within a day. A copy of what you sent is inside.&#8199;&#847;&#8199;&#847;&#8199;&#847;&#8199;&#847;</span>
+<table role="presentation" class="bg" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#f2f2f3" style="background:#f2f2f3;">
+<tr><td class="outer" align="center" style="padding:32px 12px;">
+<!--[if mso]><table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0"><tr><td><![endif]-->
+<table role="presentation" class="card" width="600" cellpadding="0" cellspacing="0" border="0" bgcolor="#f9f9fa" style="width:100%;max-width:600px;background:#f9f9fa;border:1px solid #d4d4d7;">
+
+<!-- Header band -->
+<tr><td class="px" bgcolor="#1d2d3d" style="background:#1d2d3d;padding:28px 40px;">
+  <a href="{$site}/" style="text-decoration:none;"><img src="{$site}/assets/email/logo-v2-rev.png" width="180" height="62" alt="Distinct Graphic Designs" style="display:block;width:180px;max-width:180px;height:auto;border:0;color:#f2f2f3;font-family:'Avenir Next',Avenir,Helvetica,Arial,sans-serif;font-size:16px;font-weight:bold;"></a>
+</td></tr>
+
+<!-- Hero image -->
+<tr><td bgcolor="#1d2d3d" style="background:#1d2d3d;padding:0;">
+  <img src="{$site}/assets/og-image.jpg" width="600" alt="A collage of design and marketing work by Distinct Graphic Designs" style="display:block;width:100%;max-width:600px;height:auto;border:0;">
+</td></tr>
+
+<!-- Headline -->
+<tr><td class="px" style="padding:40px 40px 0;font-family:'Avenir Next',Avenir,Helvetica,Arial,sans-serif;">
+  <p class="accent" style="margin:0 0 16px;font-size:11px;line-height:14px;mso-line-height-rule:exactly;letter-spacing:1.1px;text-transform:uppercase;color:#416180;">Enquiry received</p>
+  <h1 class="h1 ink" style="margin:0;font-size:38px;line-height:38px;mso-line-height-rule:exactly;font-weight:600;letter-spacing:-0.5px;text-transform:uppercase;color:#1d1f20;">Thanks, {$firstName}.<br><span class="accent" style="font-weight:400;color:#416180;">Your enquiry is in.</span></h1>
+  <p class="ink" style="margin:20px 0 0;font-size:16px;line-height:24px;mso-line-height-rule:exactly;color:#1d1f20;">I’ve received your enquiry and will come back to you within a day. A copy of what you sent is below. If you need to add anything, just reply to this email.</p>
+</td></tr>
+
+<!-- Enquiry summary -->
+<tr><td class="px" style="padding:32px 40px 0;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="font-family:'Avenir Next',Avenir,Helvetica,Arial,sans-serif;">
+    <tr><td class="accent line" style="padding:0 0 12px;border-bottom:1px solid #1d1f20;font-size:11px;line-height:14px;mso-line-height-rule:exactly;letter-spacing:1.1px;text-transform:uppercase;color:#416180;">Your enquiry</td></tr>
+{$rows}  </table>
+</td></tr>
+
+<!-- What happens next -->
+<tr><td class="px" style="padding:40px 40px 0;font-family:'Avenir Next',Avenir,Helvetica,Arial,sans-serif;">
+  <p class="accent" style="margin:0 0 16px;font-size:11px;line-height:14px;mso-line-height-rule:exactly;letter-spacing:1.1px;text-transform:uppercase;color:#416180;">What happens next</p>
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+    <tr>
+      <td class="accent" width="48" valign="top" style="width:48px;padding:0 0 16px;font-size:13px;line-height:22px;letter-spacing:1.3px;color:#416180;">01</td>
+      <td class="ink" valign="top" style="padding:0 0 16px;font-size:15px;line-height:22px;color:#1d1f20;">I read through your details and reply within a day.</td>
+    </tr>
+    <tr>
+      <td class="accent" width="48" valign="top" style="width:48px;font-size:13px;line-height:22px;letter-spacing:1.3px;color:#416180;">02</td>
+      <td class="ink" valign="top" style="font-size:15px;line-height:22px;color:#1d1f20;">If it’s a good fit, we book a short call to talk through scope, timing and budget.</td>
+    </tr>
+  </table>
+</td></tr>
+
+<!-- Sign-off -->
+<tr><td class="px" style="padding:40px 40px 40px;font-family:'Avenir Next',Avenir,Helvetica,Arial,sans-serif;">
+  <p class="ink" style="margin:0;font-size:15px;line-height:22px;color:#1d1f20;">Mark Lee<br><span class="muted" style="color:#5d5d60;">Distinct Graphic Designs</span></p>
+  <p style="margin:12px 0 0;font-size:15px;line-height:24px;">
+    <a class="accent" href="mailto:mark@distinctgraphicdesigns.com.au" style="color:#416180;text-decoration:underline;">mark@distinctgraphicdesigns.com.au</a><br>
+    <a class="accent" href="tel:+61423927847" style="color:#416180;text-decoration:underline;">0423 927 847</a>
+  </p>
+</td></tr>
+
+<!-- Footer -->
+<tr><td class="px plate" bgcolor="#eef6ff" style="background:#eef6ff;border-top:1px solid #1d1f20;padding:24px 40px;font-family:'Avenir Next',Avenir,Helvetica,Arial,sans-serif;">
+  <p class="muted" style="margin:0;font-size:12px;line-height:18px;color:#5d5d60;">You’re receiving this because you sent an enquiry at <a class="accent" href="{$site}/" style="color:#416180;">distinctgraphicdesigns.com.au</a>. This is a one-off reply, not a mailing list.</p>
+  <p class="muted" style="margin:10px 0 0;font-size:12px;line-height:18px;color:#5d5d60;">© {$year} Distinct Graphic Designs · Uranquinty NSW, Australia</p>
+</td></tr>
+
+</table>
+<!--[if mso]></td></tr></table><![endif]-->
+</td></tr>
+</table>
+</body>
+</html>
+HTML;
+}
+
+/**
+ * Send the auto-reply to the visitor as multipart/alternative (plain text + HTML). Replies go to $replyTo (Mark's inbox).
+ * Returns whether mail() accepted it.
+ */
+function send_autoreply(array $in, string $from, string $replyTo): bool
+{
+    $boundary = 'dgd-' . bin2hex(random_bytes(12));
+    $body = implode("\r\n", [
+        '--' . $boundary,
+        'Content-Type: text/plain; charset=UTF-8',
+        'Content-Transfer-Encoding: quoted-printable',
+        '',
+        quoted_printable_encode(autoreply_text($in)),
+        '--' . $boundary,
+        'Content-Type: text/html; charset=UTF-8',
+        'Content-Transfer-Encoding: quoted-printable',
+        '',
+        quoted_printable_encode(autoreply_html($in)),
+        '--' . $boundary . '--',
+        '',
+    ]);
+    $headers = implode("\r\n", [
+        'From: Mark Lee, Distinct Graphic Designs <' . $from . '>',
+        'Reply-To: ' . $replyTo,
+        'MIME-Version: 1.0',
+        'Content-Type: multipart/alternative; boundary="' . $boundary . '"',
+        'Auto-Submitted: auto-replied',
+        'X-Auto-Response-Suppress: All',
+    ]);
+    $subject = '=?UTF-8?B?' . base64_encode('Thanks, your enquiry has been received') . '?=';
+    return @mail($in['email'], $subject, $body, $headers, '-f' . $from);
+}

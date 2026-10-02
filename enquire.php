@@ -215,4 +215,14 @@ if (!$mailed) {
 if ($id === null && !$mailed) {
     reply(500, ['ok' => false]);
 }
+
+// Confirmation email to the visitor. Only sent once the enquiry is saved, because the hourly limits are counted in the database,
+// so this form cannot be used to send unlimited mail to other people's addresses. Turn it off with 'autoreply' => false in the config.
+if ($id !== null && ($config['autoreply'] ?? true) && $to !== '') {
+    define('ENQUIRY_AUTOREPLY', true);
+    require __DIR__ . '/enquiry-autoreply.php';
+    if (!send_autoreply($in, $from, $to)) {
+        error_log('enquire.php: auto-reply failed for enquiry #' . $id);
+    }
+}
 reply(200, ['ok' => true]);

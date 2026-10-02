@@ -21,6 +21,9 @@ return [
     'to'      => 'mark@distinctgraphicdesigns.com.au',
     'from'    => 'enquiries@distinctgraphicdesigns.com.au',
 
+    // Send the visitor a "thanks, your enquiry is in" email (enquiry-autoreply.php). Replies to it go to 'to'.
+    'autoreply' => true,
+
     // Any long random string. It is mixed into the hash of each visitor's IP address (used only for the spam rate limit).
     'salt'    => 'CHANGE_ME_TO_A_LONG_RANDOM_STRING',
 ];
