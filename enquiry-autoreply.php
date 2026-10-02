@@ -206,7 +206,8 @@ function send_autoreply(array $in, string $from, string $replyTo): bool
         '',
     ]);
     $headers = implode("\r\n", [
-        'From: Mark Lee, Distinct Graphic Designs <' . $from . '>',
+        // The display name must be quoted: unquoted, its comma splits From into two addresses and Gmail rejects the message.
+        'From: "Mark Lee, Distinct Graphic Designs" <' . $from . '>',
         'Reply-To: ' . $replyTo,
         'MIME-Version: 1.0',
         'Content-Type: multipart/alternative; boundary="' . $boundary . '"',
