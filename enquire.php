@@ -177,37 +177,11 @@ SQL
 $to = (string) ($config['to'] ?? '');
 $from = filter_var($config['from'] ?? '', FILTER_VALIDATE_EMAIL) !== false ? (string) $config['from'] : $to;
 
-$body = implode("\r\n", [
-    'New website enquiry' . ($id !== null ? ' #' . $id : ' (NOT saved to the database, this email is the only copy)'),
-    '',
-    'Name: ' . $in['name'],
-    'Email: ' . $in['email'],
-    'Phone: ' . ($in['phone'] !== '' ? $in['phone'] : 'Not provided'),
-    'Service: ' . $in['service'],
-    '',
-    'Details:',
-    str_replace("\n", "\r\n", $in['details']),
-    '',
-    '--',
-    'Sent from page: ' . $in['page'],
-    'First landing page this visit: ' . $in['landing_page'],
-    'Referrer: ' . ($in['referrer'] !== '' ? $in['referrer'] : 'Direct or unknown'),
-    'UTM source / medium / campaign: ' . $in['utm_source'] . ' / ' . $in['utm_medium'] . ' / ' . $in['utm_campaign'],
-    'UTM term / content: ' . $in['utm_term'] . ' / ' . $in['utm_content'],
-    'Google click ID: ' . ($in['gclid'] !== '' ? $in['gclid'] : 'None'),
-    'PostHog ID: ' . ($in['ph_distinct_id'] !== '' ? $in['ph_distinct_id'] : 'None'),
-    'Received (UTC): ' . gmdate('Y-m-d H:i:s'),
-]);
+// Both emails (the notification to Mark and the visitor's confirmation) are built in enquiry-emails.php.
+define('ENQUIRY_EMAILS', true);
+require __DIR__ . '/enquiry-emails.php';
 
-$subject = '=?UTF-8?B?' . base64_encode('Website enquiry — ' . $in['service']) . '?=';
-$headers = implode("\r\n", [
-    'From: Distinct Graphic Designs <' . $from . '>',
-    'Reply-To: ' . $in['email'],
-    'MIME-Version: 1.0',
-    'Content-Type: text/plain; charset=UTF-8',
-    'Content-Transfer-Encoding: quoted-printable',
-]);
-$mailed = $to !== '' && @mail($to, $subject, quoted_printable_encode($body), $headers, '-f' . $from);
+$mailed = $to !== '' && send_notification($in, $id, $to, $from);
 if (!$mailed) {
     error_log('enquire.php: email failed for enquiry ' . ($id !== null ? '#' . $id : '(not saved)'));
 }
@@ -219,8 +193,6 @@ if ($id === null && !$mailed) {
 // Confirmation email to the visitor. Only sent once the enquiry is saved, because the hourly limits are counted in the database,
 // so this form cannot be used to send unlimited mail to other people's addresses. Turn it off with 'autoreply' => false in the config.
 if ($id !== null && ($config['autoreply'] ?? true) && $to !== '') {
-    define('ENQUIRY_AUTOREPLY', true);
-    require __DIR__ . '/enquiry-autoreply.php';
     if (!send_autoreply($in, $from, $to)) {
         error_log('enquire.php: auto-reply failed for enquiry #' . $id);
     }

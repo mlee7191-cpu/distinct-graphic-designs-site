@@ -32,10 +32,10 @@ Options -Indexes
   Require all denied
 </Files>
 
-# The auto-reply email template is only included by enquire.php, never requested directly.
-<Files "enquiry-autoreply.php">
+# The email templates are only included by enquire.php, never requested directly (enquiry-autoreply.php is the old name).
+<FilesMatch "^enquiry-(emails|autoreply)\.php$">
   Require all denied
-</Files>
+</FilesMatch>
 
 # Custom 404 page (unknown URLs used to fall through to WordPress and return 503)
 ErrorDocument 404 /404.html
