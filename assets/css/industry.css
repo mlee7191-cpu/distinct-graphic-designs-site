@@ -84,7 +84,7 @@ h1, h2, h3, h4 { font-family: var(--font-heading); font-weight: var(--font-headi
 .blueprint.halftone, .blueprint.plate, .blueprint.duotone { overflow: visible; }
 .blueprint > .corner {
   position: absolute; width: 11px; height: 11px;
-  color: color-mix(in srgb, var(--color-text) 55%, transparent);
+  color: color-mix(in srgb, var(--color-text) 72%, transparent);
 }
 .blueprint > .corner::before, .blueprint > .corner::after {
   content: ""; position: absolute; background: currentColor;
@@ -123,10 +123,10 @@ a { color: var(--color-accent); text-decoration: none; }
 img { display: block; max-width: 100%; }
 figure { margin: 0; }
 figcaption {
-  font-size: 11px; margin-top: var(--space-1);
-  color: color-mix(in srgb, var(--color-text) 55%, transparent);
+  font-size: 12px; margin-top: var(--space-1);
+  color: color-mix(in srgb, var(--color-text) 72%, transparent);
 }
-.text-muted { color: color-mix(in srgb, var(--color-text) 55%, transparent); }
+.text-muted { color: color-mix(in srgb, var(--color-text) 72%, transparent); }
 :focus { outline: none; }
 :focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
 ::selection { background: color-mix(in srgb, var(--color-accent) 30%, transparent); }
@@ -168,7 +168,7 @@ figcaption {
 }
 .input {
   width: 100%; min-height: 36px; padding: 6px 10px; font: inherit;
-  font-size: 14px; color: var(--color-text); caret-color: var(--color-accent);
+  font-size: 16px; color: var(--color-text); caret-color: var(--color-accent);
   background: var(--color-surface);
   border: 1px solid var(--color-divider); border-radius: var(--radius-md);
 }
@@ -283,3 +283,48 @@ textarea.input { min-height: 90px; resize: vertical; }
 .btn { border: 1px solid var(--color-divider); }
 .btn-primary { border-color: var(--color-accent); }
 .btn-ghost { border-color: transparent; }
+
+
+/* — Apple-style polish (added after the design audit) — */
+:root { --ease-out: cubic-bezier(.16, 1, .3, 1); }
+
+/* Skip link: first tab stop on every page */
+.skip-link { position: absolute; left: 12px; top: -64px; z-index: 100; padding: 10px 16px; border-radius: 999px; background: var(--color-bg); color: var(--color-text); border: 1px solid var(--color-text); font-size: 14px; transition: top .2s var(--ease-out); }
+.skip-link:focus-visible { top: 12px; }
+main:focus { outline: none; }
+
+/* Press feedback: a quick scale on release, in the same family as the spring easing */
+.btn { transition: transform .25s var(--ease-out), background-color .15s, border-color .15s, color .15s; }
+.btn:active:not(:disabled) { transform: scale(.97); transition-duration: .08s; }
+
+/* Light focus ring variant for dark bands */
+.on-dark :focus-visible, .sticky-bar :focus-visible { outline-color: var(--color-accent-300); }
+
+/* Sticky quick bar (built by assets/js/site-chrome.js once the page header scrolls away).
+   Glass is for chrome only; it falls back to a solid fill without backdrop-filter or with reduced transparency. */
+.sticky-bar { position: fixed; top: 0; left: 0; right: 0; z-index: 50; display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  min-height: 52px; padding: 0 var(--gutter); background: var(--color-accent-900); color: var(--color-bg);
+  transform: translateY(-110%); visibility: hidden; transition: transform .4s var(--ease-out), visibility 0s .4s; }
+.sticky-bar.is-visible { transform: none; visibility: visible; transition: transform .4s var(--ease-out), visibility 0s; }
+.sticky-bar img { width: 132px; height: auto; }
+.sticky-bar .btn { background: var(--color-bg); color: var(--color-accent-900); border-color: var(--color-bg); padding: 7px 16px; font-size: 14px; }
+@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+  .sticky-bar { background: color-mix(in srgb, var(--color-accent-900) 78%, transparent); -webkit-backdrop-filter: saturate(180%) blur(20px); backdrop-filter: saturate(180%) blur(20px); }
+}
+@media (prefers-reduced-transparency: reduce) { .sticky-bar { background: var(--color-accent-900) !important; -webkit-backdrop-filter: none !important; backdrop-filter: none !important; } }
+@media print { .sticky-bar { display: none !important; } }
+
+/* Scroll reveals (home page): hidden only while JS is available, with a CSS failsafe if the script never runs */
+@keyframes reveal-failsafe { to { opacity: 1; transform: none; } }
+.js [data-reveal] { opacity: 0; transform: translateY(18px); transition: opacity .7s var(--ease-out), transform .7s var(--ease-out); animation: reveal-failsafe 0s 3s forwards; }
+.js [data-reveal].is-in { opacity: 1; transform: none; animation: none; }
+[data-count] { font-variant-numeric: tabular-nums; }
+
+/* Reduce Motion: no travel, no scaling, no smooth scrolling */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto !important; }
+  *, *::before, *::after { transition-duration: .01ms !important; transition-delay: 0s !important; scroll-behavior: auto !important; }
+  .js [data-reveal] { opacity: 1; transform: none; animation: none; }
+  .btn:active:not(:disabled) { transform: none; }
+  .sticky-bar { transform: none; }
+}

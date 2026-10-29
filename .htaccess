@@ -40,6 +40,23 @@ Options -Indexes
 # Custom 404 page (unknown URLs used to fall through to WordPress and return 503)
 ErrorDocument 404 /404.html
 
+# Security headers (no CSP: GTM and PostHog inject scripts)
+<IfModule mod_headers.c>
+  Header always set Strict-Transport-Security "max-age=31536000"
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+
+  # Caching: the fonts never change, so a year; images a month. CSS and JS stay at the server default (a week) because their names are not hashed.
+  <FilesMatch "\.(woff2|ttf)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+  <FilesMatch "\.(webp|jpg|jpeg|png|svg|ico)$">
+    Header set Cache-Control "public, max-age=2592000"
+  </FilesMatch>
+</IfModule>
+
 DirectoryIndex index.html index.php
 
 # WordPress rewrite block disabled: WordPress is no longer used on this site, so unknown URLs now get the real 404 (ErrorDocument above).
